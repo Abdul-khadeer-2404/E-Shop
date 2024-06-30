@@ -7,56 +7,56 @@ function HomePage() {
       id: 1,
       name: "Featured Product 1",
       price: 39.99,
-      image: "https://via.placeholder.com/150",
+      image: "https://picsum.photos/150/150?random=1",
     },
     {
       id: 2,
       name: "Featured Product 2",
       price: 59.99,
-      image: "https://via.placeholder.com/150",
+      image: "https://picsum.photos/150/150?random=2",
     },
     {
       id: 3,
       name: "Featured Product 3",
       price: 29.99,
-      image: "https://via.placeholder.com/150",
+      image: "https://picsum.photos/150/150?random=3",
     },
     {
       id: 4,
       name: "Featured Product 1",
       price: 39.99,
-      image: "https://via.placeholder.com/150",
+      image: "https://picsum.photos/150/150?random=4",
     },
     {
       id: 5,
       name: "Featured Product 2",
       price: 59.99,
-      image: "https://via.placeholder.com/150",
+      image: "https://picsum.photos/150/150?random=5",
     },
     {
       id: 6,
       name: "Featured Product 3",
       price: 29.99,
-      image: "https://via.placeholder.com/150",
+      image: "https://picsum.photos/150/150?random=6",
     },
     {
       id: 7,
       name: "Featured Product 3",
       price: 29.99,
-      image: "https://via.placeholder.com/150",
+      image: "https://picsum.photos/150/150?random=7",
     },
     {
       id: 8,
       name: "Featured Product 3",
       price: 29.99,
-      image: "https://via.placeholder.com/150",
+      image: "https://picsum.photos/150/150?random=8",
     },
   ];
 
   return (
     <div>
       {/* Hero Section */}
-      <section className="hero relative overflow-hidden bg-blue-600 text-white text-center py-16 md:py-24 lg:py-32 transition-all duration-300 ease-in-out group">
+      <section className="hero relative overflow-hidden bg-blue-600 text-white text-center py-16 md:py-24 lg:py-32 transition-all duration-300 ease-in-out group mb-8">
         <div className="relative z-10 container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-4 lg:mb-6">
             Welcome to E-Shop
@@ -75,7 +75,7 @@ function HomePage() {
       </section>
 
       {/* Featured Products Section */}
-      <section className="featured-products container mx-auto px-4 py-12">
+      <section className="featured-products container mx-auto px-4 py-12 mb-8">
         <h2 className="text-2xl font-bold text-center mb-6 animate-fade-in">
           Featured Products
         </h2>
@@ -112,34 +112,42 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Promotional Banner Section */}
-      <section className="promo-banners bg-gray-100 py-12">
-        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="promo-banner bg-white p-6 rounded-lg shadow-md text-center transform transition duration-300 hover:scale-105 animate-slide-in-left">
-            <h3 className="text-xl font-bold mb-3">Summer Sale</h3>
-            <p className="text-base mb-4">
-              Get up to 50% off on selected items!
-            </p>
-            <Link
-              to="/products"
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm transition duration-300 hover:bg-blue-600"
-            >
-              Shop Now
-            </Link>
-          </div>
-          <div className="promo-banner bg-white p-6 rounded-lg shadow-md text-center transform transition duration-300 hover:scale-105 animate-slide-in-right">
-            <h3 className="text-xl font-bold mb-3">New Arrivals</h3>
-            <p className="text-base mb-4">
-              Check out the latest additions to our store.
-            </p>
-            <Link
-              to="/products"
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-sm transition duration-300 hover:bg-blue-600"
-            >
-              Explore Now
-            </Link>
-          </div>
+      {/* Summer Sale Section */}
+      <section className="summer-sale relative overflow-hidden bg-yellow-500 text-white text-center py-16 md:py-24 lg:py-32 transition-all duration-300 ease-in-out group mb-8">
+        <div className="relative z-10 container mx-auto px-4">
+          <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 lg:mb-6">
+            Summer Sale
+          </h3>
+          <p className="text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 lg:mb-10 max-w-3xl mx-auto">
+            Get up to 50% off on selected items!
+          </p>
+          <Link
+            to="/products"
+            className="bg-white text-yellow-500 px-5 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4 rounded-lg text-base md:text-lg lg:text-xl font-bold transition-colors duration-300 hover:bg-yellow-100"
+          >
+            Shop Now
+          </Link>
         </div>
+        <div className="absolute inset-0 bg-orange-500 transform -skew-y-12 translate-y-full transition-transform duration-300 ease-in-out group-hover:translate-y-0"></div>
+      </section>
+
+      {/* New Arrivals Section */}
+      <section className="new-arrivals relative overflow-hidden bg-green-500 text-white text-center py-16 md:py-24 lg:py-32 transition-all duration-300 ease-in-out group mb-8">
+        <div className="relative z-10 container mx-auto px-4">
+          <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 lg:mb-6">
+            New Arrivals
+          </h3>
+          <p className="text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 lg:mb-10 max-w-3xl mx-auto">
+            Check out the latest additions to our store.
+          </p>
+          <Link
+            to="/products"
+            className="bg-white text-green-500 px-5 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4 rounded-lg text-base md:text-lg lg:text-xl font-bold transition-colors duration-300 hover:bg-green-100"
+          >
+            Explore Now
+          </Link>
+        </div>
+        <div className="absolute inset-0 bg-teal-500 transform -skew-y-12 translate-y-full transition-transform duration-300 ease-in-out group-hover:translate-y-0"></div>
       </section>
     </div>
   );
