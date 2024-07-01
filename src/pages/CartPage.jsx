@@ -12,6 +12,9 @@ function CartPage() {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : sampleCart;
   });
+  const [promoCode, setPromoCode] = useState('');
+  const [discount, setDiscount] = useState(0);
+  const [shippingMethod, setShippingMethod] = useState('standard');
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -27,7 +30,18 @@ function CartPage() {
     }
   };
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const applyPromoCode = () => {
+    // This is a simple example. In a real app, you'd validate the promo code against a backend.
+    if (promoCode === 'DISCOUNT20') {
+      setDiscount(20);
+    } else {
+      alert('Invalid promo code');
+    }
+  };
+
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const shippingCost = shippingMethod === 'express' ? 15 : 5;
+  const total = subtotal + shippingCost - discount;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -35,8 +49,8 @@ function CartPage() {
       {cart.length === 0 ? (
         <div className="text-center bg-white shadow-md rounded-lg p-8">
           <p className="text-xl mb-4 text-indigo-600">Your cart is empty.</p>
-          <Link 
-            to="/products" 
+          <Link
+            to="/products"
             className="bg-indigo-600 text-white px-6 py-3 rounded-lg inline-block hover:bg-indigo-700 transition duration-200"
           >
             Continue Shopping
@@ -54,23 +68,90 @@ function CartPage() {
               />
             ))}
           </div>
-          <div className="flex flex-col md:flex-row justify-between items-center bg-indigo-100 p-6 rounded-lg">
-            <p className="text-2xl font-bold text-indigo-800 mb-4 md:mb-0">
-              Total: ${total.toFixed(2)}
-            </p>
+
+          {/* Promo Code Section */}
+          <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+            <h2 className="text-xl font-semibold mb-4">Promo Code</h2>
+            <div className="flex space-x-4">
+              <input
+                type="text"
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value)}
+                className="flex-grow border rounded px-3 py-2"
+                placeholder="Enter promo code"
+              />
+              <button
+                onClick={applyPromoCode}
+                className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-200"
+              >
+                Apply
+              </button>
+            </div>
+          </div>
+
+          {/* Shipping Method Section */}
+          <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+            <h2 className="text-xl font-semibold mb-4">Shipping Method</h2>
+            <div className="space-y-2">
+              <label className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  value="standard"
+                  checked={shippingMethod === 'standard'}
+                  onChange={() => setShippingMethod('standard')}
+                />
+                <span>Standard Shipping ($5)</span>
+              </label>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  value="express"
+                  checked={shippingMethod === 'express'}
+                  onChange={() => setShippingMethod('express')}
+                />
+                <span>Express Shipping ($15)</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Order Summary */}
+          <div className="bg-indigo-100 p-6 rounded-lg mb-8">
+            <h2 className="text-2xl font-bold mb-4 text-indigo-800">Order Summary</h2>
+            <div className="space-y-2 mb-4">
+              <p className="flex justify-between"><span>Subtotal:</span> <span>${subtotal.toFixed(2)}</span></p>
+              <p className="flex justify-between"><span>Shipping:</span> <span>${shippingCost.toFixed(2)}</span></p>
+              {discount > 0 && (
+                <p className="flex justify-between text-green-600"><span>Discount:</span> <span>-${discount.toFixed(2)}</span></p>
+              )}
+              <p className="flex justify-between font-bold text-lg"><span>Total:</span> <span>${total.toFixed(2)}</span></p>
+            </div>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <Link 
-                to="/products" 
+              <Link
+                to="/products"
                 className="bg-white text-indigo-600 px-6 py-3 rounded-lg inline-block hover:bg-indigo-50 transition duration-200 text-center"
               >
                 Continue Shopping
               </Link>
-              <Link 
-                to="/checkout" 
+              <Link
+                to="/checkout"
                 className="bg-indigo-600 text-white px-6 py-3 rounded-lg inline-block hover:bg-indigo-700 transition duration-200 text-center"
               >
                 Proceed to Checkout
               </Link>
+            </div>
+          </div>
+
+          {/* Recently Viewed Items */}
+          <div className="bg-white shadow-md rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4">Recently Viewed Items</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {/* This would typically be populated from a recently viewed items state or API call */}
+              <div className="border rounded p-2 text-center">
+                <img src="https://via.placeholder.com/100" alt="Product" className="mx-auto mb-2" />
+                <p className="text-sm">Product Name</p>
+                <p className="text-sm font-semibold">$XX.XX</p>
+              </div>
+              {/* Repeat for other recently viewed items */}
             </div>
           </div>
         </>

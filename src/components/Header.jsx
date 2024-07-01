@@ -5,7 +5,7 @@ import { faSearch, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 function Header() {
   const location = useLocation();
-  const showSearchBar = location.pathname === '/' || location.pathname === '/products';
+  const showSearchBar = location.pathname === '/';
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
