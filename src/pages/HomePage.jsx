@@ -6,6 +6,7 @@ function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
+  // ... (keep the featuredProducts and heroSlides arrays as they were)
   const featuredProducts = [
     {
       id: 1,
@@ -96,7 +97,7 @@ function HomePage() {
   return (
     <div className="bg-indigo-50">
       {/* Hero Section */}
-      <section className="hero relative overflow-hidden bg-indigo-600 text-white text-center h-96 flex items-center justify-center">
+      <section className="hero relative overflow-hidden bg-indigo-600 text-white text-center h-64 sm:h-80 md:h-96 flex items-center justify-center">
         {heroSlides.map((slide, index) => (
           <motion.div
             key={index}
@@ -110,12 +111,12 @@ function HomePage() {
               backgroundPosition: "center",
             }}
           >
-            <div className="bg-black bg-opacity-50 p-8 rounded-lg">
+            <div className="bg-black bg-opacity-50 p-4 sm:p-6 md:p-8 rounded-lg">
               <motion.h1
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
-                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-4 lg:mb-6"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 md:mb-4"
               >
                 {slide.title}
               </motion.h1>
@@ -123,7 +124,7 @@ function HomePage() {
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
-                className="text-xl md:text-2xl lg:text-3xl mb-6 md:mb-8 lg:mb-10 max-w-3xl mx-auto"
+                className="text-sm sm:text-base md:text-lg lg:text-xl mb-4 sm:mb-6 md:mb-8 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto"
               >
                 {slide.subtitle}
               </motion.p>
@@ -134,7 +135,7 @@ function HomePage() {
               >
                 <Link
                   to="/products"
-                  className="bg-white text-indigo-600 px-5 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4 rounded-lg text-base md:text-lg lg:text-xl font-bold transition-colors duration-300 hover:bg-indigo-100"
+                  className="bg-white text-indigo-600 px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-3 rounded-lg text-sm sm:text-base md:text-lg font-bold transition-colors duration-300 hover:bg-indigo-100"
                 >
                   Shop Now
                 </Link>
@@ -145,16 +146,16 @@ function HomePage() {
       </section>
 
       {/* Featured Products Section */}
-      <section className="featured-products container mx-auto px-4 py-12 mb-8">
+      <section className="featured-products container mx-auto px-4 py-8 sm:py-12">
         <motion.h2
           initial={{ y: 50, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="text-2xl font-bold text-center mb-6 text-indigo-800"
+          className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6 text-indigo-800"
         >
           Featured Products
         </motion.h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
           {featuredProducts.map((product, index) => (
             <motion.div
               key={product.id}
@@ -171,16 +172,16 @@ function HomePage() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="p-3">
-                <h3 className="font-semibold text-sm mb-1 truncate text-indigo-800">
+              <div className="p-2 sm:p-3">
+                <h3 className="font-semibold text-xs sm:text-sm mb-1 truncate text-indigo-800">
                   {product.name}
                 </h3>
-                <p className="text-indigo-600 text-sm mb-2">
+                <p className="text-indigo-600 text-xs sm:text-sm mb-2">
                   ${product.price.toFixed(2)}
                 </p>
                 <Link
                   to={`/product/${product.id}`}
-                  className="bg-indigo-500 text-white text-xs px-3 py-1 rounded transition duration-300 hover:bg-indigo-600"
+                  className="bg-indigo-500 text-white text-xs px-2 py-1 sm:px-3 sm:py-1 rounded transition duration-300 hover:bg-indigo-600"
                 >
                   View Details
                 </Link>
@@ -195,14 +196,14 @@ function HomePage() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="summer-sale relative lg:h-96 sm:h-80 overflow-hidden bg-indigo-500 text-white text-center py-16 md:py-24 lg:py-32 mb-8"
+        className="summer-sale relative h-64 sm:h-80 md:h-96 overflow-hidden bg-indigo-500 text-white text-center py-8 sm:py-16 md:py-24 mb-8"
       >
         <div className="relative z-10 container mx-auto px-4">
           <motion.h3
             initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 lg:mb-6"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 md:mb-4"
           >
             Summer Sale
           </motion.h3>
@@ -210,7 +211,7 @@ function HomePage() {
             initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
-            className="text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 lg:mb-10 max-w-3xl mx-auto"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl mb-4 sm:mb-6 md:mb-8 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto"
           >
             Get up to 50% off on selected items!
           </motion.p>
@@ -221,7 +222,7 @@ function HomePage() {
           >
             <Link
               to="/products"
-              className="bg-white text-indigo-500 px-5 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4 rounded-lg text-base md:text-lg lg:text-xl font-bold transition-colors duration-300 hover:bg-indigo-100"
+              className="bg-white text-indigo-500 px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-3 rounded-lg text-sm sm:text-base md:text-lg font-bold transition-colors duration-300 hover:bg-indigo-100"
             >
               Shop Now
             </Link>
@@ -235,14 +236,14 @@ function HomePage() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="new-arrivals lg:h-96 sm:h-80 relative overflow-hidden bg-indigo-400 text-white text-center py-16 md:py-24 lg:py-32 mb-8"
+        className="new-arrivals relative h-64 sm:h-80 md:h-96 overflow-hidden bg-indigo-400 text-white text-center py-8 sm:py-16 md:py-24 mb-8"
       >
         <div className="relative z-10 container mx-auto px-4">
           <motion.h3
             initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 lg:mb-6"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 md:mb-4"
           >
             New Arrivals
           </motion.h3>
@@ -250,7 +251,7 @@ function HomePage() {
             initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
-            className="text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 lg:mb-10 max-w-3xl mx-auto"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl mb-4 sm:mb-6 md:mb-8 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto"
           >
             Check out the latest additions to our store.
           </motion.p>
@@ -261,7 +262,7 @@ function HomePage() {
           >
             <Link
               to="/products"
-              className="bg-white text-indigo-400 px-5 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4 rounded-lg text-base md:text-lg lg:text-xl font-bold transition-colors duration-300 hover:bg-indigo-100"
+              className="bg-white text-indigo-400 px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-3 rounded-lg text-sm sm:text-base md:text-lg font-bold transition-colors duration-300 hover:bg-indigo-100"
             >
               Explore Now
             </Link>
@@ -280,7 +281,7 @@ function HomePage() {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
+          className="h-5 w-5 sm:h-6 sm:w-6"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

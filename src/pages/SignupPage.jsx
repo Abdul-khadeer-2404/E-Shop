@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaGoogle, FaFacebook } from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash, FaUser, FaGoogle, FaFacebook } from 'react-icons/fa';
 
 function SignupPage() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
@@ -9,7 +9,6 @@ function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -20,19 +19,24 @@ function SignupPage() {
     }
   };
 
-  const isValidEmail = (email) => {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  };
-
   const validateForm = () => {
     let newErrors = {};
-    if (!formData.name.trim()) newErrors.name = 'Name is required';
-    if (!formData.email.trim()) newErrors.email = 'Email is required';
-    else if (!isValidEmail(formData.email)) newErrors.email = 'Please enter a valid email address';
-    if (!formData.password) newErrors.password = 'Password is required';
-    else if (formData.password.length < 8) newErrors.password = 'Password must be at least 8 characters';
-    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
+    if (!formData.name) {
+      newErrors.name = 'Name is required';
+    }
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -44,14 +48,11 @@ function SignupPage() {
       try {
         // Simulating API call
         await new Promise(resolve => setTimeout(resolve, 1500));
-        console.log('Signing up:', formData);
-        setShowSuccessMessage(true);
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 2000);
+        console.log('Signed up successfully:', formData);
+        navigate('/dashboard'); // Redirect to dashboard on success
       } catch (error) {
         console.error('Signup failed:', error);
-        setErrors({ general: 'Signup failed. Please try again.' });
+        setErrors({ general: 'Failed to create account. Please try again.' });
       } finally {
         setIsLoading(false);
       }
@@ -59,78 +60,148 @@ function SignupPage() {
   };
 
   const handleSocialSignup = (provider) => {
-    console.log(`Sign up with ${provider}`);
-    // Implement social sign-up logic here
+    console.log(`Signing up with ${provider}`);
+    // Implement social signup logic here
   };
-
+  
   return (
     <motion.div 
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 py-12 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4 sm:p-6 lg:p-8"
     >
-      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-2xl">
+      <div className="w-full max-w-md space-y-8 bg-white p-6 sm:p-8 rounded-2xl shadow-2xl">
         <motion.div
           initial={{ scale: 0.5 }}
           animate={{ scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-center"
         >
           <FaUser className="mx-auto h-12 w-12 text-indigo-600" />
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create your account</h2>
-          <p className="mt-2 text-center text-sm text-gray-600">Join us and start your journey</p>
+          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+            Create an Account
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            Join us and start your journey
+          </p>
         </motion.div>
-
-        {showSuccessMessage && (
-          <motion.div
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
-            role="alert"
-          >
-            <strong className="font-bold">Success!</strong>
-            <span className="block sm:inline"> Your account has been created. Redirecting...</span>
-          </motion.div>
-        )}
-
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit} noValidate>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <InputField
-              icon={<FaUser />}
-              name="name"
-              type="text"
-              placeholder="Full Name"
-              value={formData.name}
-              onChange={handleChange}
-              error={errors.name}
-            />
-            <InputField
-              icon={<FaEnvelope />}
-              name="email"
-              type="email"
-              placeholder="Email address"
-              value={formData.email}
-              onChange={handleChange}
-              error={errors.email}
-            />
-            <PasswordField
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              showPassword={showPassword}
-              setShowPassword={setShowPassword}
-              error={errors.password}
-            />
-            <PasswordField
-              name="confirmPassword"
-              placeholder="Confirm Password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              showPassword={showConfirmPassword}
-              setShowPassword={setShowConfirmPassword}
-              error={errors.confirmPassword}
-            />
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="space-y-4">
+            <motion.div
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <label htmlFor="name" className="sr-only">Full Name</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaUser className="h-5 w-5 text-indigo-500" />
+                </div>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  required
+                  className="appearance-none rounded-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-300 ease-in-out"
+                  placeholder="Full Name"
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ x: 50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <label htmlFor="email" className="sr-only">Email address</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaEnvelope className="h-5 w-5 text-indigo-500" />
+                </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className="appearance-none rounded-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-300 ease-in-out"
+                  placeholder="Email address"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <label htmlFor="password" className="sr-only">Password</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaLock className="h-5 w-5 text-indigo-500" />
+                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="new-password"
+                  required
+                  className="appearance-none rounded-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-300 ease-in-out"
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <FaEyeSlash className="h-5 w-5 text-indigo-500" />
+                  ) : (
+                    <FaEye className="h-5 w-5 text-indigo-500" />
+                  )}
+                </button>
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ x: 50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
+              <label htmlFor="confirmPassword" className="sr-only">Confirm Password</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <FaLock className="h-5 w-5 text-indigo-500" />
+                </div>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  autoComplete="new-password"
+                  required
+                  className="appearance-none rounded-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-300 ease-in-out"
+                  placeholder="Confirm Password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? (
+                    <FaEyeSlash className="h-5 w-5 text-indigo-500" />
+                  ) : (
+                    <FaEye className="h-5 w-5 text-indigo-500" />
+                  )}
+                </button>
+              </div>
+            </motion.div>
           </div>
 
           <AnimatePresence>
@@ -150,18 +221,18 @@ function SignupPage() {
 
           <div>
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300 ease-in-out disabled:opacity-50"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300 ease-in-out disabled:opacity-50"
             >
               {isLoading ? (
                 <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-              ) : "Sign Up"}
+              ) : "Sign up"}
             </motion.button>
           </div>
         </form>
@@ -181,22 +252,22 @@ function SignupPage() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               type="button"
-              className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              className="w-full inline-flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
               onClick={() => handleSocialSignup('Google')}
             >
-              <FaGoogle className="w-5 h-5 text-red-500" />
-              <span className="ml-2">Google</span>
+              <FaGoogle className="w-5 h-5 text-red-500 mr-2" />
+              <span>Google</span>
             </motion.button>
 
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               type="button"
-              className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+              className="w-full inline-flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
               onClick={() => handleSocialSignup('Facebook')}
             >
-              <FaFacebook className="w-5 h-5 text-blue-600" />
-              <span className="ml-2">Facebook</span>
+              <FaFacebook className="w-5 h-5 text-blue-600 mr-2" />
+              <span>Facebook</span>
             </motion.button>
           </div>
         </div>
@@ -204,89 +275,10 @@ function SignupPage() {
         <p className="mt-2 text-center text-sm text-gray-600">
           Already have an account?{' '}
           <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500 transition duration-300 ease-in-out">
-            Log in
+            Sign in
           </Link>
         </p>
       </div>
-    </motion.div>
-  );
-}
-
-function InputField({ icon, name, type, placeholder, value, onChange, error }) {
-  return (
-    <motion.div
-      initial={{ x: -100, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <label htmlFor={name} className="sr-only">{placeholder}</label>
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          {React.cloneElement(icon, { className: "h-5 w-5 text-indigo-500" })}
-        </div>
-        <input
-          id={name}
-          name={name}
-          type={type}
-          required
-          className={`appearance-none rounded-none relative block w-full px-3 py-3 border ${
-            error ? 'border-red-500' : 'border-gray-300'
-          } placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition duration-300 ease-in-out`}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-        />
-      </div>
-      {error && (
-        <p className="mt-2 text-sm text-red-600" id={`${name}-error`}>
-          {error}
-        </p>
-      )}
-    </motion.div>
-  );
-}
-
-function PasswordField({ name, placeholder, value, onChange, showPassword, setShowPassword, error }) {
-  return (
-    <motion.div
-      initial={{ x: -100, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <label htmlFor={name} className="sr-only">{placeholder}</label>
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <FaLock className="h-5 w-5 text-indigo-500" />
-        </div>
-        <input
-          id={name}
-          name={name}
-          type={showPassword ? "text" : "password"}
-          required
-          className={`appearance-none rounded-none relative block w-full px-3 py-3 border ${
-            error ? 'border-red-500' : 'border-gray-300'
-          } placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition duration-300 ease-in-out`}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-        />
-        <button
-          type="button"
-          className="absolute inset-y-0 right-0 pr-3 flex items-center"
-          onClick={() => setShowPassword(!showPassword)}
-        >
-          {showPassword ? (
-            <FaEyeSlash className="h-5 w-5 text-indigo-500" />
-          ) : (
-            <FaEye className="h-5 w-5 text-indigo-500" />
-          )}
-        </button>
-      </div>
-      {error && (
-        <p className="mt-2 text-sm text-red-600" id={`${name}-error`}>
-          {error}
-        </p>
-      )}
     </motion.div>
   );
 }

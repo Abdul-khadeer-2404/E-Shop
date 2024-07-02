@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 
+// ... (keep the sampleProducts array as it is)
 const sampleProducts = [
   {
     id: 1,
@@ -103,6 +104,7 @@ const sampleProducts = [
 ];
 
 function ProductListPage() {
+  // ... (keep all the state and useEffect hooks as they are)
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -185,7 +187,7 @@ function ProductListPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-center text-indigo-800">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-indigo-800">
         Our Products
       </h1>
 
@@ -226,6 +228,7 @@ function ProductListPage() {
   );
 }
 
+// ... (keep LoadingSpinner and ErrorMessage components as they are)
 function LoadingSpinner() {
   return (
     <div className="flex justify-center items-center h-screen">
@@ -242,17 +245,13 @@ function ErrorMessage({ message }) {
   );
 }
 
-ErrorMessage.propTypes = {
-  message: PropTypes.string.isRequired,
-};
-
 function ProductControls({ sortBy, setSortBy, filterPrice, setFilterPrice, searchTerm, setSearchTerm, viewMode, setViewMode }) {
   const debouncedSetSearchTerm = debounce(setSearchTerm, 300);
 
   return (
-    <div className="mb-6 flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-4 lg:space-y-0">
+    <div className="mb-6 flex flex-col space-y-4">
       <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-        <div className="flex items-center">
+        <div className="flex items-center w-full sm:w-auto">
           <label htmlFor="sort" className="mr-2 whitespace-nowrap">
             Sort by:
           </label>
@@ -260,14 +259,14 @@ function ProductControls({ sortBy, setSortBy, filterPrice, setFilterPrice, searc
             id="sort"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="border rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="border rounded px-2 py-1 w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             <option value="name">Name</option>
             <option value="price_asc">Price (Low to High)</option>
             <option value="price_desc">Price (High to Low)</option>
           </select>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center w-full sm:w-auto">
           <label htmlFor="filter" className="mr-2 whitespace-nowrap">
             Max Price:
           </label>
@@ -276,7 +275,7 @@ function ProductControls({ sortBy, setSortBy, filterPrice, setFilterPrice, searc
             id="filter"
             value={filterPrice}
             onChange={(e) => setFilterPrice(e.target.value)}
-            className="border rounded px-2 py-1 w-24 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="border rounded px-2 py-1 w-full sm:w-24 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
       </div>
@@ -286,24 +285,28 @@ function ProductControls({ sortBy, setSortBy, filterPrice, setFilterPrice, searc
           placeholder="Search products..."
           value={searchTerm}
           onChange={(e) => debouncedSetSearchTerm(e.target.value)}
-          className="border rounded px-2 py-1 w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="border rounded px-2 py-1 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
         <div className="flex items-center space-x-2">
           <button
             onClick={() => setViewMode("grid")}
-            className={`px-3 py-1 rounded ${
-              viewMode === "grid" ? "bg-indigo-500 text-white" : "bg-gray-200"
+            className={`p-2 rounded ${
+              viewMode === "grid" ? "bg-indigo-500 text-white" : "bg-gray-200 text-gray-600"
             }`}
           >
-            Grid
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+            </svg>
           </button>
           <button
             onClick={() => setViewMode("list")}
-            className={`px-3 py-1 rounded ${
-              viewMode === "list" ? "bg-indigo-500 text-white" : "bg-gray-200"
+            className={`p-2 rounded ${
+              viewMode === "list" ? "bg-indigo-500 text-white" : "bg-gray-200 text-gray-600"
             }`}
           >
-            List
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+            </svg>
           </button>
         </div>
       </div>
@@ -311,21 +314,10 @@ function ProductControls({ sortBy, setSortBy, filterPrice, setFilterPrice, searc
   );
 }
 
-ProductControls.propTypes = {
-  sortBy: PropTypes.string.isRequired,
-  setSortBy: PropTypes.func.isRequired,
-  filterPrice: PropTypes.string.isRequired,
-  setFilterPrice: PropTypes.func.isRequired,
-  searchTerm: PropTypes.string.isRequired,
-  setSearchTerm: PropTypes.func.isRequired,
-  viewMode: PropTypes.string.isRequired,
-  setViewMode: PropTypes.func.isRequired,
-};
-
 function ProductList({ products, viewMode, addToCart }) {
   if (viewMode === "grid") {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} addToCart={addToCart} />
         ))}
@@ -342,12 +334,6 @@ function ProductList({ products, viewMode, addToCart }) {
   }
 }
 
-ProductList.propTypes = {
-  products: PropTypes.array.isRequired,
-  viewMode: PropTypes.string.isRequired,
-  addToCart: PropTypes.func.isRequired,
-};
-
 function ProductCard({ product, addToCart }) {
   return (
     <div className="border rounded-lg overflow-hidden shadow-md transform transition duration-300 hover:scale-105 bg-white">
@@ -359,23 +345,23 @@ function ProductCard({ product, addToCart }) {
           loading="lazy"
         />
       </div>
-      <div className="p-4">
-        <h3 className="font-semibold text-sm md:text-base mb-2 truncate text-indigo-800">
+      <div className="p-2 sm:p-4">
+        <h3 className="font-semibold text-xs sm:text-sm mb-1 sm:mb-2 truncate text-indigo-800">
           {product.name}
         </h3>
-        <p className="text-indigo-600 text-xs md:text-sm mb-3">
+        <p className="text-indigo-600 text-xs mb-2 sm:mb-3">
           ${product.price.toFixed(2)}
         </p>
-        <div className="flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
+        <div className="flex flex-col space-y-1 sm:space-y-2">
           <Link
             to={`/product/${product.id}`}
-            className="bg-indigo-500 text-white text-xs md:text-sm px-3 py-1 rounded transition duration-300 hover:bg-indigo-600 w-full sm:w-auto text-center"
+            className="bg-indigo-500 text-white text-xs px-2 sm:px-3 py-1 rounded transition duration-300 hover:bg-indigo-600 text-center"
           >
             View Details
           </Link>
           <button
             onClick={() => addToCart(product)}
-            className="bg-green-500 text-white text-xs md:text-sm px-3 py-1 rounded transition duration-300 hover:bg-green-600 w-full sm:w-auto"
+            className="bg-green-500 text-white text-xs px-2 sm:px-3 py-1 rounded transition duration-300 hover:bg-green-600"
           >
             Add to Cart
           </button>
@@ -385,18 +371,13 @@ function ProductCard({ product, addToCart }) {
   );
 }
 
-ProductCard.propTypes = {
-  product: PropTypes.object.isRequired,
-  addToCart: PropTypes.func.isRequired,
-};
-
 function ProductListItem({ product, addToCart }) {
   return (
     <div className="flex flex-col sm:flex-row border rounded-lg overflow-hidden shadow-md bg-white">
       <img
         src={product.image}
         alt={product.name}
-        className="w-full sm:w-64 h-48 sm:h-auto object-cover aspect-[4/3]"
+        className="w-full sm:w-48 h-48 object-cover"
         loading="lazy"
       />
       <div className="p-4 flex-grow flex flex-col justify-between">
@@ -427,11 +408,6 @@ function ProductListItem({ product, addToCart }) {
   );
 }
 
-ProductListItem.propTypes = {
-  product: PropTypes.object.isRequired,
-  addToCart: PropTypes.func.isRequired,
-};
-
 function Pagination({ currentPage, totalProducts, productsPerPage, paginate }) {
   const pageNumbers = [];
 
@@ -445,7 +421,7 @@ function Pagination({ currentPage, totalProducts, productsPerPage, paginate }) {
         <button
           key={number}
           onClick={() => paginate(number)}
-          className={`mx-1 my-1 px-3 py-1 rounded ${
+          className={`mx-1 my-1 px-2 py-1 text-sm rounded ${
             currentPage === number
               ? "bg-indigo-500 text-white"
               : "bg-indigo-100 text-indigo-700"
@@ -458,13 +434,6 @@ function Pagination({ currentPage, totalProducts, productsPerPage, paginate }) {
   );
 }
 
-Pagination.propTypes = {
-  currentPage: PropTypes.number.isRequired,
-  totalProducts: PropTypes.number.isRequired,
-  productsPerPage: PropTypes.number.isRequired,
-  paginate: PropTypes.func.isRequired,
-};
-
 function CartButton({ cart, setIsCartOpen }) {
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -472,18 +441,13 @@ function CartButton({ cart, setIsCartOpen }) {
     <div className="fixed bottom-4 right-4 z-10">
       <button
         onClick={() => setIsCartOpen(true)}
-        className="bg-indigo-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-indigo-600 transition duration-300"
+        className="bg-indigo-500 text-white px-3 py-2 text-sm rounded-full shadow-lg hover:bg-indigo-600 transition duration-300"
       >
         Cart ({totalItems})
       </button>
     </div>
   );
 }
-
-CartButton.propTypes = {
-  cart: PropTypes.array.isRequired,
-  setIsCartOpen: PropTypes.func.isRequired,
-};
 
 function CartModal({ cart, removeFromCart, setIsCartOpen }) {
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -494,14 +458,14 @@ function CartModal({ cart, removeFromCart, setIsCartOpen }) {
       onClick={() => setIsCartOpen(false)}
     >
       <div
-        className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"
+        className="relative top-20 mx-auto p-5 border w-11/12 max-w-md shadow-lg rounded-md bg-white"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mt-3 text-center">
           <h3 className="text-lg leading-6 font-medium text-gray-900">
             Shopping Cart
           </h3>
-          <div className="mt-2 px-7 py-3">
+          <div className="mt-2 px-2 sm:px-7 py-3">
             {cart.length === 0 ? (
               <p>Your cart is empty.</p>
             ) : (
@@ -509,9 +473,9 @@ function CartModal({ cart, removeFromCart, setIsCartOpen }) {
                 {cart.map((item) => (
                   <li
                     key={item.id}
-                    className="flex justify-between items-center"
+                    className="flex justify-between items-center text-sm"
                   >
-                    <span>
+                    <span className="truncate mr-2">
                       {item.name} - ${item.price.toFixed(2)} x {item.quantity}
                     </span>
                     <button
@@ -548,6 +512,7 @@ function CartModal({ cart, removeFromCart, setIsCartOpen }) {
   );
 }
 
+// ... (keep PropTypes definitions as they are)
 CartModal.propTypes = {
   cart: PropTypes.array.isRequired,
   removeFromCart: PropTypes.func.isRequired,

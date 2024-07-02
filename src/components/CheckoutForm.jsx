@@ -17,7 +17,6 @@ function CheckoutForm({ onSubmit }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors({ ...errors, [name]: '' });
     }
@@ -44,14 +43,14 @@ function CheckoutForm({ onSubmit }) {
     }
   };
 
-  const inputClass = "w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500";
-  const errorClass = "text-red-500 text-sm mt-1";
+  const inputClass = "w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm";
+  const errorClass = "text-red-500 text-xs mt-1";
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-lg mx-auto px-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="name" className="block mb-1">Full Name</label>
+          <label htmlFor="name" className="block mb-1 text-sm">Full Name</label>
           <input
             type="text"
             id="name"
@@ -63,7 +62,7 @@ function CheckoutForm({ onSubmit }) {
           {errors.name && <p className={errorClass}>{errors.name}</p>}
         </div>
         <div>
-          <label htmlFor="email" className="block mb-1">Email</label>
+          <label htmlFor="email" className="block mb-1 text-sm">Email</label>
           <input
             type="email"
             id="email"
@@ -76,7 +75,7 @@ function CheckoutForm({ onSubmit }) {
         </div>
       </div>
       <div>
-        <label htmlFor="address" className="block mb-1">Address</label>
+        <label htmlFor="address" className="block mb-1 text-sm">Address</label>
         <input
           type="text"
           id="address"
@@ -87,9 +86,9 @@ function CheckoutForm({ onSubmit }) {
         />
         {errors.address && <p className={errorClass}>{errors.address}</p>}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="city" className="block mb-1">City</label>
+          <label htmlFor="city" className="block mb-1 text-sm">City</label>
           <input
             type="text"
             id="city"
@@ -101,7 +100,7 @@ function CheckoutForm({ onSubmit }) {
           {errors.city && <p className={errorClass}>{errors.city}</p>}
         </div>
         <div>
-          <label htmlFor="zipCode" className="block mb-1">Zip Code</label>
+          <label htmlFor="zipCode" className="block mb-1 text-sm">Zip Code</label>
           <input
             type="text"
             id="zipCode"
@@ -114,7 +113,7 @@ function CheckoutForm({ onSubmit }) {
         </div>
       </div>
       <div>
-        <label htmlFor="cardNumber" className="block mb-1">Card Number</label>
+        <label htmlFor="cardNumber" className="block mb-1 text-sm">Card Number</label>
         <input
           type="text"
           id="cardNumber"
@@ -126,9 +125,9 @@ function CheckoutForm({ onSubmit }) {
         />
         {errors.cardNumber && <p className={errorClass}>{errors.cardNumber}</p>}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         <div>
-          <label htmlFor="expirationDate" className="block mb-1">Expiration Date</label>
+          <label htmlFor="expirationDate" className="block mb-1 text-sm">Expiration Date</label>
           <input
             type="text"
             id="expirationDate"
@@ -141,7 +140,7 @@ function CheckoutForm({ onSubmit }) {
           {errors.expirationDate && <p className={errorClass}>{errors.expirationDate}</p>}
         </div>
         <div>
-          <label htmlFor="cvv" className="block mb-1">CVV</label>
+          <label htmlFor="cvv" className="block mb-1 text-sm">CVV</label>
           <input
             type="text"
             id="cvv"
@@ -154,7 +153,7 @@ function CheckoutForm({ onSubmit }) {
           {errors.cvv && <p className={errorClass}>{errors.cvv}</p>}
         </div>
       </div>
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200">
+      <button type="submit" className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200 text-sm">
         Place Order
       </button>
     </form>

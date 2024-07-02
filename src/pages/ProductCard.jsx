@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 function ProductCard({ product, addToCart }) {
   return (
     <div className="border rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 bg-white transform hover:-translate-y-1">
-      <div className="relative pb-[75%]">
+      <div className="relative pb-[100%] sm:pb-[75%]">
         <img
           src={product.image}
           alt={product.name}
@@ -18,30 +18,30 @@ function ProductCard({ product, addToCart }) {
           </span>
         )}
       </div>
-      <div className="p-4">
-        <h3 className="font-semibold text-lg mb-2 text-gray-800 line-clamp-2">
+      <div className="p-3 sm:p-4">
+        <h3 className="font-semibold text-base sm:text-lg mb-2 text-gray-800 line-clamp-2">
           {product.name}
         </h3>
         <div className="flex justify-between items-center mb-3">
-          <p className="text-gray-900 font-bold text-lg">
+          <p className="text-gray-900 font-bold text-base sm:text-lg">
             ${product.price.toFixed(2)}
           </p>
           {product.originalPrice && (
-            <p className="text-gray-500 line-through text-sm">
+            <p className="text-gray-500 line-through text-xs sm:text-sm">
               ${product.originalPrice.toFixed(2)}
             </p>
           )}
         </div>
-        <div className="flex flex-col sm:flex-row gap-2">
+        <div className="flex flex-col gap-2">
           <Link
             to={`/product/${product.id}`}
-            className="flex-1 bg-blue-500 text-white text-center text-sm px-4 py-2 rounded hover:bg-blue-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="w-full bg-blue-500 text-white text-center text-sm px-3 py-2 rounded hover:bg-blue-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
             View Details
           </Link>
           <button
             onClick={() => addToCart(product)}
-            className="flex-1 bg-green-500 text-white text-sm px-4 py-2 rounded hover:bg-green-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+            className="w-full bg-green-500 text-white text-sm px-3 py-2 rounded hover:bg-green-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
             aria-label={`Add ${product.name} to cart`}
           >
             Add to Cart

@@ -52,8 +52,8 @@ function ProductDetailPage() {
   if (!product) return <ProductNotFound />;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col lg:flex-row items-start">
+    <div className="container mx-auto px-4 py-6 sm:py-8">
+      <div className="flex flex-col md:flex-row items-start">
         <ProductImage product={product} />
         <ProductInfo 
           product={product} 
@@ -80,7 +80,7 @@ function ProductNotFound() {
 
 function ProductImage({ product }) {
   return (
-    <div className="w-full lg:w-1/2 mb-8 lg:mb-0">
+    <div className="w-full md:w-1/2 mb-6 md:mb-0">
       <img src={product.image} alt={product.name} className="w-full h-auto object-cover rounded-lg shadow-lg" />
     </div>
   );
@@ -88,10 +88,10 @@ function ProductImage({ product }) {
 
 function ProductInfo({ product, quantity, onQuantityChange, onAddToCart }) {
   return (
-    <div className="lg:ml-12 w-full lg:w-1/2">
-      <h1 className="text-3xl font-bold mb-4 text-indigo-800">{product.name}</h1>
-      <p className="text-2xl font-semibold mb-4 text-indigo-600">${product.price.toFixed(2)}</p>
-      <p className="mb-6 text-gray-700">{product.description}</p>
+    <div className="md:ml-8 w-full md:w-1/2">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-3 text-indigo-800">{product.name}</h1>
+      <p className="text-xl sm:text-2xl font-semibold mb-3 text-indigo-600">${product.price.toFixed(2)}</p>
+      <p className="mb-4 text-gray-700 text-sm sm:text-base">{product.description}</p>
       <ProductFeatures features={product.features} />
       <StockInfo stock={product.stock} />
       <QuantitySelector 
@@ -99,22 +99,24 @@ function ProductInfo({ product, quantity, onQuantityChange, onAddToCart }) {
         stock={product.stock} 
         onChange={onQuantityChange} 
       />
-      <AddToCartButton 
-        stock={product.stock} 
-        onClick={onAddToCart} 
-      />
-      <Link to="/products" className="ml-4 text-indigo-600 hover:text-indigo-800 underline">
-        Back to Products
-      </Link>
+      <div className="flex flex-col sm:flex-row items-center gap-4">
+        <AddToCartButton 
+          stock={product.stock} 
+          onClick={onAddToCart} 
+        />
+        <Link to="/products" className="text-indigo-600 hover:text-indigo-800 underline text-sm sm:text-base">
+          Back to Products
+        </Link>
+      </div>
     </div>
   );
 }
 
 function ProductFeatures({ features }) {
   return (
-    <div className="mb-6">
-      <h2 className="text-xl font-semibold mb-2 text-indigo-800">Features:</h2>
-      <ul className="list-disc list-inside">
+    <div className="mb-4">
+      <h2 className="text-lg sm:text-xl font-semibold mb-2 text-indigo-800">Features:</h2>
+      <ul className="list-disc list-inside text-sm sm:text-base">
         {features.map((feature, index) => (
           <li key={index} className="text-gray-700">{feature}</li>
         ))}
@@ -125,8 +127,8 @@ function ProductFeatures({ features }) {
 
 function StockInfo({ stock }) {
   return (
-    <div className="mb-6">
-      <p className={`font-semibold ${stock > 0 ? 'text-green-600' : 'text-red-600'}`}>
+    <div className="mb-4">
+      <p className={`font-semibold ${stock > 0 ? 'text-green-600' : 'text-red-600'} text-sm sm:text-base`}>
         {stock > 0 ? `In stock: ${stock}` : 'Out of stock'}
       </p>
     </div>
@@ -135,8 +137,8 @@ function StockInfo({ stock }) {
 
 function QuantitySelector({ quantity, stock, onChange }) {
   return (
-    <div className="flex items-center mb-6">
-      <label htmlFor="quantity" className="mr-4 font-semibold">Quantity:</label>
+    <div className="flex items-center mb-4">
+      <label htmlFor="quantity" className="mr-3 font-semibold text-sm sm:text-base">Quantity:</label>
       <input
         type="number"
         id="quantity"
@@ -144,7 +146,7 @@ function QuantitySelector({ quantity, stock, onChange }) {
         max={stock}
         value={quantity}
         onChange={onChange}
-        className="border rounded px-2 py-1 w-16 text-center"
+        className="border rounded px-2 py-1 w-16 text-center text-sm sm:text-base"
         aria-label="Product quantity"
       />
     </div>
@@ -158,7 +160,7 @@ function AddToCartButton({ stock, onClick }) {
       disabled={stock === 0}
       className={`${
         stock > 0 ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-400 cursor-not-allowed'
-      } text-white px-6 py-3 rounded-lg transition duration-300`}
+      } text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition duration-300 text-sm sm:text-base w-full sm:w-auto`}
     >
       {stock > 0 ? 'Add to Cart' : 'Out of Stock'}
     </button>
