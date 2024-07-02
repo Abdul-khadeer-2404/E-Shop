@@ -96,7 +96,7 @@ function HomePage() {
   return (
     <div className="bg-indigo-50">
       {/* Hero Section */}
-      <section className="hero relative overflow-hidden bg-indigo-600 text-white text-center h-screen flex items-center justify-center">
+      <section className="hero relative overflow-hidden bg-indigo-600 text-white text-center h-96 flex items-center justify-center">
         {heroSlides.map((slide, index) => (
           <motion.div
             key={index}
@@ -195,7 +195,7 @@ function HomePage() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="summer-sale relative overflow-hidden bg-indigo-500 text-white text-center py-16 md:py-24 lg:py-32 mb-8"
+        className="summer-sale relative lg:h-96 sm:h-80 overflow-hidden bg-indigo-500 text-white text-center py-16 md:py-24 lg:py-32 mb-8"
       >
         <div className="relative z-10 container mx-auto px-4">
           <motion.h3
@@ -235,7 +235,7 @@ function HomePage() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="new-arrivals relative overflow-hidden bg-indigo-400 text-white text-center py-16 md:py-24 lg:py-32 mb-8"
+        className="new-arrivals lg:h-96 sm:h-80 relative overflow-hidden bg-indigo-400 text-white text-center py-16 md:py-24 lg:py-32 mb-8"
       >
         <div className="relative z-10 container mx-auto px-4">
           <motion.h3
