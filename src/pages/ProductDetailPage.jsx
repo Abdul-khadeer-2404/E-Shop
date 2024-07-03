@@ -2,22 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const sampleProduct = {
-  id: 1,
-  name: 'Sample Product 1',
-  price: 29.99,
-  image: 'https://via.placeholder.com/400x400',
-  description: 'This is a detailed description of the sample product. It features high-quality materials and exceptional craftsmanship. Perfect for everyday use and available at an unbeatable price.',
-  features: ['High-quality materials', 'Exceptional craftsmanship', 'Perfect for everyday use', 'Unbeatable price'],
-  stock: 10
-};
-
 function ProductDetailPage() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [cart, setCart] = useState(() => {
+    const savedCart = localStorage.getItem('cart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -25,21 +23,56 @@ function ProductDetailPage() {
       try {
         // Simulating API call
         await new Promise(resolve => setTimeout(resolve, 1000));
-        setProduct(sampleProduct);
+        
+        // Replace this with your actual API call to fetch the product by id
+        const fetchedProduct = {
+          id: parseInt(id),
+          name: `Product ${id}`,
+          price: 29.99,
+          image: `https://picsum.photos/400?random=${id}`,
+          description: `This is a detailed description of product ${id}. It features high-quality materials and exceptional craftsmanship.`,
+          features: ['High-quality materials', 'Exceptional craftsmanship', 'Perfect for everyday use', 'Unbeatable price'],
+          stock: 10
+        };
+        
+        setProduct(fetchedProduct);
+        updateRecentlyViewed(fetchedProduct);
       } catch (err) {
         setError('Failed to fetch product details. Please try again later.');
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchProduct();
   }, [id]);
 
   const handleAddToCart = () => {
-    // Implement add to cart functionality
-    console.log(`Added ${quantity} of ${product.name} to cart`);
-    // Add animation or notification here
+    if (product && quantity > 0) {
+      setCart(prevCart => {
+        const existingItem = prevCart.find(item => item.id === product.id);
+        if (existingItem) {
+          return prevCart.map(item =>
+            item.id === product.id
+              ? { ...item, quantity: item.quantity + quantity }
+              : item
+          );
+        } else {
+          return [...prevCart, { ...product, quantity }];
+        }
+      });
+      // Show a notification or animation here
+      alert(`Added ${quantity} of ${product.name} to cart`);
+    }
+  };
+
+  const updateRecentlyViewed = (product) => {
+    const recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+    const updatedRecentlyViewed = [
+      product,
+      ...recentlyViewed.filter(item => item.id !== product.id)
+    ].slice(0, 4); // Keep only the 4 most recent items
+    localStorage.setItem('recentlyViewed', JSON.stringify(updatedRecentlyViewed));
   };
 
   const handleQuantityChange = (e) => {
@@ -79,9 +112,26 @@ function ProductNotFound() {
 }
 
 function ProductImage({ product }) {
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   return (
     <div className="w-full md:w-1/2 mb-6 md:mb-0">
-      <img src={product.image} alt={product.name} className="w-full h-auto object-cover rounded-lg shadow-lg" />
+      {imageError ? (
+        <div className="w-full h-400 bg-gray-200 flex items-center justify-center rounded-lg shadow-lg">
+          <span className="text-gray-500">Image not available</span>
+        </div>
+      ) : (
+        <img 
+          src={product.image} 
+          alt={product.name} 
+          className="w-full h-auto object-cover rounded-lg shadow-lg"
+          onError={handleImageError}
+        />
+      )}
     </div>
   );
 }

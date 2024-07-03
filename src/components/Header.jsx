@@ -25,7 +25,7 @@ function Header() {
 
   return (
     <header className="bg-indigo-600 text-white shadow-md">
-      <div className="container mx-auto px-4 py-3">
+      <div className="container mx-auto px-4 py-6">
         <div className="flex flex-wrap justify-between items-center">
           <div className="flex items-center w-full sm:w-auto justify-between">
             <Link to="/" className="text-xl sm:text-2xl font-bold transition duration-300 ease-in-out hover:text-indigo-200">E-Shop</Link>
@@ -58,11 +58,12 @@ function Header() {
                 <li key={item.name}>
                   <Link
                     to={item.path}
-                    className="block py-1 transition duration-300 ease-in-out hover:text-indigo-200 group flex items-center"
+                    className="block py-1 transition duration-300 ease-in-out hover:text-indigo-200 group flex items-center relative nav-link"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.icon && <FontAwesomeIcon icon={item.icon} className="mr-2" />}
                     {item.name}
+                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-indigo-200 transform scale-x-0 transition-transform duration-300 ease-in-out group-hover:scale-x-100"></span>
                   </Link>
                 </li>
               ))}

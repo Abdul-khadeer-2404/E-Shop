@@ -2,23 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CartItem from '../components/CartItem';
 
-const sampleCart = [
-  { id: 1, name: 'Sample Product 1', price: 29.99, quantity: 1, image: 'https://via.placeholder.com/150' },
-  { id: 2, name: 'Sample Product 2', price: 49.99, quantity: 2, image: 'https://via.placeholder.com/150' }
-];
-
 function CartPage() {
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem('cart');
-    return savedCart ? JSON.parse(savedCart) : sampleCart;
+    return savedCart ? JSON.parse(savedCart) : [];
   });
   const [promoCode, setPromoCode] = useState('');
   const [discount, setDiscount] = useState(0);
   const [shippingMethod, setShippingMethod] = useState('standard');
+  const [recentlyViewed, setRecentlyViewed] = useState(() => {
+    const savedRecentlyViewed = localStorage.getItem('recentlyViewed');
+    return savedRecentlyViewed ? JSON.parse(savedRecentlyViewed) : [];
+  });
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
+
+  useEffect(() => {
+    localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+  }, [recentlyViewed]);
 
   const updateQuantity = (id, quantity) => {
     setCart(cart.map(item => item.id === id ? { ...item, quantity } : item));
@@ -36,6 +39,13 @@ function CartPage() {
     } else {
       alert('Invalid promo code');
     }
+  };
+
+  const addToRecentlyViewed = (product) => {
+    setRecentlyViewed(prevItems => {
+      const filteredItems = prevItems.filter(item => item.id !== product.id);
+      return [product, ...filteredItems].slice(0, 4);
+    });
   };
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -142,12 +152,13 @@ function CartPage() {
           <div className="bg-white shadow-md rounded-lg p-4 sm:p-6">
             <h2 className="text-lg sm:text-xl font-semibold mb-4">Recently Viewed Items</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
-              <div className="border rounded p-2 text-center">
-                <img src="https://via.placeholder.com/100" alt="Product" className="mx-auto mb-2 w-full h-auto" />
-                <p className="text-xs sm:text-sm">Product Name</p>
-                <p className="text-xs sm:text-sm font-semibold">$XX.XX</p>
-              </div>
-              {/* Repeat for other recently viewed items */}
+              {recentlyViewed.map(product => (
+                <div key={product.id} className="border rounded p-2 text-center">
+                  <img src={product.image} alt={product.name} className="mx-auto mb-2 w-full h-auto" />
+                  <p className="text-xs sm:text-sm">{product.name}</p>
+                  <p className="text-xs sm:text-sm font-semibold">${product.price.toFixed(2)}</p>
+                </div>
+              ))}
             </div>
           </div>
         </>

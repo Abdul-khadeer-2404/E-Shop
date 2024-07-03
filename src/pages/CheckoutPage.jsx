@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CheckoutForm from '../components/CheckoutForm';
 
@@ -6,12 +6,14 @@ function CheckoutPage() {
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
 
-  // Mock cart data - in a real app, this would come from a cart state or context
-  const cartItems = [
-    { id: 1, name: 'Product 1', price: 29.99, quantity: 2 },
-    { id: 2, name: 'Product 2', price: 49.99, quantity: 1 },
-  ];
+  useEffect(() => {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      setCartItems(JSON.parse(savedCart));
+    }
+  }, []);
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const tax = subtotal * 0.1; // 10% tax rate
@@ -27,6 +29,9 @@ function CheckoutPage() {
 
       // Process the checkout (e.g., send to API, validate payment, etc.)
       console.log('Processing checkout:', formData);
+
+      // Clear the cart from localStorage
+      localStorage.removeItem('cart');
 
       // Redirect to a success page
       navigate('/order-confirmation');
