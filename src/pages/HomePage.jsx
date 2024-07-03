@@ -185,83 +185,127 @@ function HomePage() {
       </section>
       {/* Summer Sale Section */}
       <motion.section
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="summer-sale flex flex-col align-center justify-center relative h-64 sm:h-80 md:h-96 overflow-hidden bg-indigo-500 text-white text-center py-8 sm:py-16 md:py-24 mb-8"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 0.7 }}
+      className="summer-sale flex flex-col align-center justify-center relative h-64 sm:h-80 md:h-96 overflow-hidden bg-indigo-600 text-white text-center py-8 sm:py-16 md:py-24 mb-8"
+    >
+      <div className="absolute inset-0 bg-pattern opacity-10"></div>
+      
+      <motion.div
+        initial={{ y: 50, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.7 }}
+        className="relative z-10 container mx-auto px-4"
       >
-        <div className="relative z-10 container mx-auto px-4">
-          <motion.h3
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 md:mb-4"
+        <motion.h3
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6"
+        >
+          Summer Spectacular Sale
+        </motion.h3>
+        
+        <motion.p
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-6 sm:mb-8 max-w-xl mx-auto"
+        >
+          Dive into savings with up to 50% off on selected summer essentials!
+        </motion.p>
+        
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.7, duration: 0.5 }}
+        >
+          <Link
+            to="/products"
+            className="inline-block bg-white text-indigo-600 px-6 py-3 sm:px-8 sm:py-4 rounded-full text-lg sm:text-xl font-bold transition-all duration-300 hover:bg-indigo-100 hover:shadow-lg transform hover:-translate-y-1"
           >
-            Summer Sale
-          </motion.h3>
-          <motion.p
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className="text-base sm:text-lg md:text-xl lg:text-2xl mb-4 sm:mb-6 md:mb-8 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto"
-          >
-            Get up to 50% off on selected items!
-          </motion.p>
-          <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-          >
-            <Link
-              to="/products"
-              className="bg-white text-indigo-500 px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-3 rounded-lg text-sm sm:text-base md:text-lg font-bold transition-colors duration-300 hover:bg-indigo-100"
-            >
-              Shop Now
-            </Link>
-          </motion.div>
-        </div>
-        <div className="absolute inset-0 bg-indigo-600 transform -skew-y-12 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
-      </motion.section>
+            Explore Deals
+          </Link>
+        </motion.div>
+      </motion.div>
+      
+      <motion.div
+        initial={{ scale: 1.1, opacity: 0 }}
+        whileInView={{ scale: 1, opacity: 0.2 }}
+        transition={{ delay: 0.2, duration: 1 }}
+        className="absolute -bottom-16 -right-16 w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 bg-white rounded-full"
+      ></motion.div>
+      
+      <motion.div
+        initial={{ scale: 1.1, opacity: 0 }}
+        whileInView={{ scale: 1, opacity: 0.2 }}
+        transition={{ delay: 0.4, duration: 1 }}
+        className="absolute -top-16 -left-16 w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 bg-purple-300 rounded-full"
+      ></motion.div>
+    </motion.section>
 
       {/* New Arrivals Section */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="new-arrivals flex flex-col align-center justify-center relative h-64 sm:h-80 md:h-96 overflow-hidden bg-indigo-400 text-white text-center py-8 sm:py-16 md:py-24 mb-8"
+    <motion.section
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 0.7 }}
+      className="new-arrivals flex flex-col align-center justify-center relative h-64 sm:h-80 md:h-96 overflow-hidden bg-gradient-to-r from-indigo-400 to-purple-500 text-white text-center py-8 sm:py-16 md:py-24 mb-8"
+    >
+      <div className="absolute inset-0 bg-pattern opacity-10"></div>
+      
+      <motion.div
+        initial={{ y: 50, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.7 }}
+        className="relative z-10 container mx-auto px-4"
       >
-        <div className="relative z-10 container mx-auto px-4">
-          <motion.h3
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 md:mb-4"
+        <motion.h3
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6"
+        >
+          Discover New Arrivals
+        </motion.h3>
+        
+        <motion.p
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-6 sm:mb-8 max-w-xl mx-auto"
+        >
+          Be the first to explore our latest collections and trending styles.
+        </motion.p>
+        
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.7, duration: 0.5 }}
+        >
+          <Link
+            to="/products"
+            className="inline-block bg-white text-indigo-600 px-6 py-3 sm:px-8 sm:py-4 rounded-full text-lg sm:text-xl font-bold transition-all duration-300 hover:bg-opacity-90 hover:shadow-lg transform hover:-translate-y-1"
           >
-            New Arrivals
-          </motion.h3>
-          <motion.p
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className="text-base sm:text-lg md:text-xl lg:text-2xl mb-4 sm:mb-6 md:mb-8 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto"
-          >
-            Check out the latest additions to our store.
-          </motion.p>
-          <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.5 }}
-          >
-            <Link
-              to="/products"
-              className="bg-white text-indigo-400 px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-3 rounded-lg text-sm sm:text-base md:text-lg font-bold transition-colors duration-300 hover:bg-indigo-100"
-            >
-              Explore Now
-            </Link>
-          </motion.div>
-        </div>
-        <div className="absolute inset-0 bg-indigo-500 transform -skew-y-12 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
-      </motion.section>
+            Shop New Arrivals
+          </Link>
+        </motion.div>
+      </motion.div>
+      
+      <motion.div
+        initial={{ x: '100%' }}
+        whileInView={{ x: 0 }}
+        transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
+        className="absolute -bottom-16 -right-16 w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 bg-indigo-300 rounded-full opacity-30"
+      ></motion.div>
+      
+      <motion.div
+        initial={{ x: '-100%' }}
+        whileInView={{ x: 0 }}
+        transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
+        className="absolute -top-16 -left-16 w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 bg-purple-300 rounded-full opacity-30"
+      ></motion.div>
+    </motion.section>
 
       {/* Scroll to Top Button */}
       <motion.button
