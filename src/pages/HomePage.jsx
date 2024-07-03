@@ -5,58 +5,7 @@ import { motion } from "framer-motion";
 function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-
-  // ... (keep the featuredProducts and heroSlides arrays as they were)
-  const featuredProducts = [
-    {
-      id: 1,
-      name: "Wireless Noise-Cancelling Headphones",
-      price: 249.99,
-      image: "https://picsum.photos/seed/headphones/300/300",
-    },
-    {
-      id: 2,
-      name: "4K Ultra HD Smart TV - 55\"",
-      price: 699.99,
-      image: "https://picsum.photos/seed/tv/300/300",
-    },
-    {
-      id: 3,
-      name: "Ergonomic Office Chair",
-      price: 199.99,
-      image: "https://picsum.photos/seed/chair/300/300",
-    },
-    {
-      id: 4,
-      name: "Smartphone - Latest Model",
-      price: 799.99,
-      image: "https://picsum.photos/seed/smartphone/300/300",
-    },
-    {
-      id: 5,
-      name: "Stainless Steel Kitchen Appliance Set",
-      price: 1299.99,
-      image: "https://picsum.photos/seed/kitchenset/300/300",
-    },
-    {
-      id: 6,
-      name: "Portable Bluetooth Speaker",
-      price: 79.99,
-      image: "https://picsum.photos/seed/speaker/300/300",
-    },
-    {
-      id: 7,
-      name: "Fitness Tracker Watch",
-      price: 129.99,
-      image: "https://picsum.photos/seed/fitnesstracker/300/300",
-    },
-    {
-      id: 8,
-      name: "Digital SLR Camera",
-      price: 649.99,
-      image: "https://picsum.photos/seed/camera/300/300",
-    },
-  ];
+  const [featuredProducts, setFeaturedProducts] = useState([]);
 
   const heroSlides = [
     {
@@ -92,6 +41,23 @@ function HomePage() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    fetch("https://fakestoreapi.com/products")
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json); // Log the full response
+        // Take only the first 8 items
+        const limitedProducts = json.slice(0, 8).map((product) => ({
+          id: product.id,
+          name: product.title,
+          price: product.price,
+          image: product.image,
+        }));
+        setFeaturedProducts(limitedProducts);
+      })
+      .catch((error) => console.error("Error fetching products:", error));
   }, []);
 
   return (
@@ -151,52 +117,78 @@ function HomePage() {
           initial={{ y: 50, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6 text-indigo-800"
+          className="text-2xl sm:text-4xl font-bold text-center mb-4 sm:mb-6 text-indigo-800"
         >
           Featured Products
         </motion.h2>
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5, staggerChildren: 0.1 }}
+          className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+        >
           {featuredProducts.map((product, index) => (
             <motion.div
               key={product.id}
               initial={{ y: 50, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              whileHover={{ scale: 1.05 }}
-              className="border border-indigo-200 rounded-lg overflow-hidden shadow-md bg-white"
+              transition={{ duration: 0.5 }}
+              whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+              className="border rounded-lg overflow-hidden shadow-md bg-white"
             >
-              <div className="aspect-w-1 aspect-h-1 w-full">
+              <motion.div
+                className="w-full pb-[75%] relative"
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.3 }}
+              >
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-full object-cover"
+                  className="absolute top-0 left-0 w-full h-full object-cover"
+                  loading="lazy"
                 />
-              </div>
-              <div className="p-2 sm:p-3">
-                <h3 className="font-semibold text-xs sm:text-sm mb-1 truncate text-indigo-800">
-                  {product.name}
-                </h3>
-                <p className="text-indigo-600 text-xs sm:text-sm mb-2">
-                  ${product.price.toFixed(2)}
-                </p>
-                <Link
-                  to={`/product/${product.id}`}
-                  className="bg-indigo-500 text-white text-xs px-2 py-1 sm:px-3 sm:py-1 rounded transition duration-300 hover:bg-indigo-600"
+              </motion.div>
+              <div className="p-2 sm:p-4">
+                <motion.h3
+                  className="font-semibold text-xs sm:text-sm mb-1 sm:mb-2 truncate text-indigo-800"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2, duration: 0.3 }}
                 >
-                  View Details
-                </Link>
+                  {product.name}
+                </motion.h3>
+                <motion.p
+                  className="text-indigo-600 text-xs mb-2 sm:mb-3"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.3 }}
+                >
+                  ${product.price.toFixed(2)}
+                </motion.p>
+                <motion.div
+                  className="flex flex-col space-y-1 sm:space-y-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, duration: 0.3 }}
+                >
+                  <Link
+                    to={`/product/${product.id}`}
+                    className="bg-indigo-500 text-white text-xs px-2 sm:px-3 py-1 rounded transition duration-300 hover:bg-indigo-600 text-center"
+                  >
+                    View Details
+                  </Link>
+                </motion.div>
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
-
       {/* Summer Sale Section */}
       <motion.section
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="summer-sale relative h-64 sm:h-80 md:h-96 overflow-hidden bg-indigo-500 text-white text-center py-8 sm:py-16 md:py-24 mb-8"
+        className="summer-sale flex flex-col align-center justify-center relative h-64 sm:h-80 md:h-96 overflow-hidden bg-indigo-500 text-white text-center py-8 sm:py-16 md:py-24 mb-8"
       >
         <div className="relative z-10 container mx-auto px-4">
           <motion.h3
@@ -236,7 +228,7 @@ function HomePage() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="new-arrivals relative h-64 sm:h-80 md:h-96 overflow-hidden bg-indigo-400 text-white text-center py-8 sm:py-16 md:py-24 mb-8"
+        className="new-arrivals flex flex-col align-center justify-center relative h-64 sm:h-80 md:h-96 overflow-hidden bg-indigo-400 text-white text-center py-8 sm:py-16 md:py-24 mb-8"
       >
         <div className="relative z-10 container mx-auto px-4">
           <motion.h3
@@ -270,7 +262,7 @@ function HomePage() {
         </div>
         <div className="absolute inset-0 bg-indigo-500 transform -skew-y-12 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
       </motion.section>
-      
+
       {/* Scroll to Top Button */}
       <motion.button
         initial={{ opacity: 0 }}

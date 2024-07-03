@@ -21,29 +21,31 @@ function ProductDetailPage() {
     const fetchProduct = async () => {
       setLoading(true);
       try {
-        // Simulating API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        const response = await fetch(`https://fakestoreapi.com/products/${id}`);
+        const fetchedProduct = await response.json();
         
-        // Replace this with your actual API call to fetch the product by id
-        const fetchedProduct = {
-          id: parseInt(id),
-          name: `Product ${id}`,
-          price: 29.99,
-          image: `https://picsum.photos/400?random=${id}`,
-          description: `This is a detailed description of product ${id}. It features high-quality materials and exceptional craftsmanship.`,
-          features: ['High-quality materials', 'Exceptional craftsmanship', 'Perfect for everyday use', 'Unbeatable price'],
-          stock: 10
+        // Transform the API response to match our expected product structure
+        const transformedProduct = {
+          id: fetchedProduct.id,
+          name: fetchedProduct.title,
+          price: fetchedProduct.price,
+          image: fetchedProduct.image,
+          description: fetchedProduct.description,
+          features: [fetchedProduct.category], // Using category as a feature for demonstration
+          stock: 10 // Assuming a default stock value as it's not provided by the API
         };
         
-        setProduct(fetchedProduct);
-        updateRecentlyViewed(fetchedProduct);
+        setProduct(transformedProduct);
+        updateRecentlyViewed(transformedProduct);
+        console.log(fetchedProduct); // Log the original API response
       } catch (err) {
         setError('Failed to fetch product details. Please try again later.');
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
-  
+
     fetchProduct();
   }, [id]);
 

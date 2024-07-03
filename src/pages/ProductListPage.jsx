@@ -3,113 +3,12 @@ import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 
-// ... (keep the sampleProducts array as it is)
-const sampleProducts = [
-  {
-    id: 1,
-    name: "Sample Product 1",
-    price: 29.99,
-    image: "https://picsum.photos/300/225?random=1",
-  },
-  {
-    id: 2,
-    name: "Sample Product 2",
-    price: 49.99,
-    image: "https://picsum.photos/300/225?random=2",
-  },
-  {
-    id: 3,
-    name: "Sample Product 3",
-    price: 19.99,
-    image: "https://picsum.photos/300/225?random=3",
-  },
-  {
-    id: 4,
-    name: "Sample Product 4",
-    price: 99.99,
-    image: "https://picsum.photos/300/225?random=4",
-  },
-  {
-    id: 5,
-    name: "Sample Product 5",
-    price: 29.99,
-    image: "https://picsum.photos/300/225?random=5",
-  },
-  {
-    id: 6,
-    name: "Sample Product 6",
-    price: 49.99,
-    image: "https://picsum.photos/300/225?random=6",
-  },
-  {
-    id: 7,
-    name: "Sample Product 7",
-    price: 19.99,
-    image: "https://picsum.photos/300/225?random=7",
-  },
-  {
-    id: 8,
-    name: "Sample Product 8",
-    price: 99.99,
-    image: "https://picsum.photos/300/225?random=8",
-  },
-  {
-    id: 9,
-    name: "Sample Product 9",
-    price: 29.99,
-    image: "https://picsum.photos/300/225?random=9",
-  },
-  {
-    id: 10,
-    name: "Sample Product 10",
-    price: 49.99,
-    image: "https://picsum.photos/300/225?random=10",
-  },
-  {
-    id: 11,
-    name: "Sample Product 11",
-    price: 19.99,
-    image: "https://picsum.photos/300/225?random=11",
-  },
-  {
-    id: 12,
-    name: "Sample Product 12",
-    price: 99.99,
-    image: "https://picsum.photos/300/225?random=12",
-  },
-  {
-    id: 13,
-    name: "Sample Product 13",
-    price: 29.99,
-    image: "https://picsum.photos/300/225?random=13",
-  },
-  {
-    id: 14,
-    name: "Sample Product 14",
-    price: 49.99,
-    image: "https://picsum.photos/300/225?random=14",
-  },
-  {
-    id: 15,
-    name: "Sample Product 15",
-    price: 19.99,
-    image: "https://picsum.photos/300/225?random=15",
-  },
-  {
-    id: 16,
-    name: "Sample Product 16",
-    price: 99.99,
-    image: "https://picsum.photos/300/225?random=16",
-  },
-];
-
 function ProductListPage() {
-  // ... (keep all the state and useEffect hooks as they are)
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortBy, setSortBy] = useState("name");
+  const [sortBy, setSortBy] = useState("title");
   const [filterPrice, setFilterPrice] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("grid");
@@ -131,10 +30,16 @@ function ProductListPage() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setProducts(sampleProducts);
+      const response = await fetch('https://fakestoreapi.com/products');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setProducts(data);
+      console.log(data); // This logs the fetched data to the console
     } catch (err) {
       setError("Failed to fetch products. Please try again later.");
+      console.error("There was a problem with the fetch operation:", err);
     } finally {
       setLoading(false);
     }
@@ -145,10 +50,10 @@ function ProductListPage() {
       .filter(
         (product) =>
           (filterPrice === "" || product.price <= parseFloat(filterPrice)) &&
-          product.name.toLowerCase().includes(searchTerm.toLowerCase())
+          product.title.toLowerCase().includes(searchTerm.toLowerCase())
       )
       .sort((a, b) => {
-        if (sortBy === "name") return a.name.localeCompare(b.name);
+        if (sortBy === "title") return a.title.localeCompare(b.title);
         if (sortBy === "price_asc") return a.price - b.price;
         if (sortBy === "price_desc") return b.price - a.price;
         return 0;
@@ -228,7 +133,6 @@ function ProductListPage() {
   );
 }
 
-// ... (keep LoadingSpinner and ErrorMessage components as they are)
 function LoadingSpinner() {
   return (
     <div className="flex justify-center items-center h-screen">
@@ -261,7 +165,7 @@ function ProductControls({ sortBy, setSortBy, filterPrice, setFilterPrice, searc
             onChange={(e) => setSortBy(e.target.value)}
             className="border rounded px-2 py-1 w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
-            <option value="name">Name</option>
+            <option value="title">Name</option>
             <option value="price_asc">Price (Low to High)</option>
             <option value="price_desc">Price (High to Low)</option>
           </select>
@@ -340,14 +244,14 @@ function ProductCard({ product, addToCart }) {
       <div className="w-full pb-[75%] relative">
         <img
           src={product.image}
-          alt={product.name}
+          alt={product.title}
           className="absolute top-0 left-0 w-full h-full object-cover"
           loading="lazy"
         />
       </div>
       <div className="p-2 sm:p-4">
         <h3 className="font-semibold text-xs sm:text-sm mb-1 sm:mb-2 truncate text-indigo-800">
-          {product.name}
+          {product.title}
         </h3>
         <p className="text-indigo-600 text-xs mb-2 sm:mb-3">
           ${product.price.toFixed(2)}
@@ -376,14 +280,14 @@ function ProductListItem({ product, addToCart }) {
     <div className="flex flex-col sm:flex-row border rounded-lg overflow-hidden shadow-md bg-white">
       <img
         src={product.image}
-        alt={product.name}
+        alt={product.title}
         className="w-full sm:w-48 h-48 object-cover"
         loading="lazy"
       />
       <div className="p-4 flex-grow flex flex-col justify-between">
         <div>
           <h3 className="font-semibold text-lg mb-2 text-indigo-800">
-            {product.name}
+            {product.title}
           </h3>
           <p className="text-indigo-600 text-sm mb-3">
             ${product.price.toFixed(2)}
@@ -476,7 +380,7 @@ function CartModal({ cart, removeFromCart, setIsCartOpen }) {
                     className="flex justify-between items-center text-sm"
                   >
                     <span className="truncate mr-2">
-                      {item.name} - ${item.price.toFixed(2)} x {item.quantity}
+                      {item.title} - ${item.price.toFixed(2)} x {item.quantity}
                     </span>
                     <button
                       onClick={() => removeFromCart(item.id)}
@@ -512,7 +416,55 @@ function CartModal({ cart, removeFromCart, setIsCartOpen }) {
   );
 }
 
-// ... (keep PropTypes definitions as they are)
+ProductControls.propTypes = {
+  sortBy: PropTypes.string.isRequired,
+  setSortBy: PropTypes.func.isRequired,
+  filterPrice: PropTypes.string.isRequired,
+  setFilterPrice: PropTypes.func.isRequired,
+  searchTerm: PropTypes.string.isRequired,
+  setSearchTerm: PropTypes.func.isRequired,
+  viewMode: PropTypes.string.isRequired,
+  setViewMode: PropTypes.func.isRequired,
+};
+
+ProductList.propTypes = {
+  products: PropTypes.array.isRequired,
+  viewMode: PropTypes.string.isRequired,
+  addToCart: PropTypes.func.isRequired,
+};
+
+ProductCard.propTypes = {
+  product: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    image: PropTypes.string.isRequired,
+  }).isRequired,
+  addToCart: PropTypes.func.isRequired,
+};
+
+ProductListItem.propTypes = {
+  product: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    image: PropTypes.string.isRequired,
+  }).isRequired,
+  addToCart: PropTypes.func.isRequired,
+};
+
+Pagination.propTypes = {
+  currentPage: PropTypes.number.isRequired,
+  totalProducts: PropTypes.number.isRequired,
+  productsPerPage: PropTypes.number.isRequired,
+  paginate: PropTypes.func.isRequired,
+};
+
+CartButton.propTypes = {
+  cart: PropTypes.array.isRequired,
+  setIsCartOpen: PropTypes.func.isRequired,
+};
+
 CartModal.propTypes = {
   cart: PropTypes.array.isRequired,
   removeFromCart: PropTypes.func.isRequired,

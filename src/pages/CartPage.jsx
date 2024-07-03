@@ -1,63 +1,76 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import CartItem from '../components/CartItem';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import CartItem from "../components/CartItem";
 
 function CartPage() {
   const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem('cart');
+    const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
-  const [promoCode, setPromoCode] = useState('');
+  const [promoCode, setPromoCode] = useState("");
   const [discount, setDiscount] = useState(0);
-  const [shippingMethod, setShippingMethod] = useState('standard');
+  const [shippingMethod, setShippingMethod] = useState("standard");
   const [recentlyViewed, setRecentlyViewed] = useState(() => {
-    const savedRecentlyViewed = localStorage.getItem('recentlyViewed');
+    const savedRecentlyViewed = localStorage.getItem("recentlyViewed");
     return savedRecentlyViewed ? JSON.parse(savedRecentlyViewed) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
   useEffect(() => {
-    localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+    localStorage.setItem("recentlyViewed", JSON.stringify(recentlyViewed));
   }, [recentlyViewed]);
 
   const updateQuantity = (id, quantity) => {
-    setCart(cart.map(item => item.id === id ? { ...item, quantity } : item));
+    setCart(
+      cart.map((item) => (item.id === id ? { ...item, quantity } : item))
+    );
   };
 
   const removeItem = (id) => {
-    if (window.confirm('Are you sure you want to remove this item from your cart?')) {
-      setCart(cart.filter(item => item.id !== id));
+    if (
+      window.confirm(
+        "Are you sure you want to remove this item from your cart?"
+      )
+    ) {
+      setCart(cart.filter((item) => item.id !== id));
     }
   };
 
   const applyPromoCode = () => {
-    if (promoCode === 'DISCOUNT20') {
+    if (promoCode === "DISCOUNT20") {
       setDiscount(20);
     } else {
-      alert('Invalid promo code');
+      alert("Invalid promo code");
     }
   };
 
   const addToRecentlyViewed = (product) => {
-    setRecentlyViewed(prevItems => {
-      const filteredItems = prevItems.filter(item => item.id !== product.id);
+    setRecentlyViewed((prevItems) => {
+      const filteredItems = prevItems.filter((item) => item.id !== product.id);
       return [product, ...filteredItems].slice(0, 4);
     });
   };
 
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shippingCost = shippingMethod === 'express' ? 15 : 5;
+  const subtotal = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+  const shippingCost = shippingMethod === "express" ? 15 : 5;
   const total = subtotal + shippingCost - discount;
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-indigo-800">Your Cart</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-indigo-800">
+        Your Cart
+      </h1>
       {cart.length === 0 ? (
         <div className="text-center bg-white shadow-md rounded-lg p-6 sm:p-8">
-          <p className="text-lg sm:text-xl mb-4 text-indigo-600">Your cart is empty.</p>
+          <p className="text-lg sm:text-xl mb-4 text-indigo-600">
+            Your cart is empty.
+          </p>
           <Link
             to="/products"
             className="bg-indigo-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg inline-block hover:bg-indigo-700 transition duration-200 text-sm sm:text-base"
@@ -69,7 +82,7 @@ function CartPage() {
         <>
           <div className="bg-white shadow-md rounded-lg overflow-hidden mb-6 sm:mb-8">
             <div className="divide-y divide-gray-200">
-              {cart.map(item => (
+              {cart.map((item) => (
                 <CartItem
                   key={item.id}
                   item={item}
@@ -81,7 +94,9 @@ function CartPage() {
           </div>
 
           <div className="bg-white shadow-md rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
-            <h2 className="text-lg sm:text-xl font-semibold mb-4">Promo Code</h2>
+            <h2 className="text-lg sm:text-xl font-semibold mb-4">
+              Promo Code
+            </h2>
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
               <input
                 type="text"
@@ -100,14 +115,16 @@ function CartPage() {
           </div>
 
           <div className="bg-white shadow-md rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
-            <h2 className="text-lg sm:text-xl font-semibold mb-4">Shipping Method</h2>
+            <h2 className="text-lg sm:text-xl font-semibold mb-4">
+              Shipping Method
+            </h2>
             <div className="space-y-2">
               <label className="flex items-center space-x-2 text-sm">
                 <input
                   type="radio"
                   value="standard"
-                  checked={shippingMethod === 'standard'}
-                  onChange={() => setShippingMethod('standard')}
+                  checked={shippingMethod === "standard"}
+                  onChange={() => setShippingMethod("standard")}
                 />
                 <span>Standard Shipping ($5)</span>
               </label>
@@ -115,8 +132,8 @@ function CartPage() {
                 <input
                   type="radio"
                   value="express"
-                  checked={shippingMethod === 'express'}
-                  onChange={() => setShippingMethod('express')}
+                  checked={shippingMethod === "express"}
+                  onChange={() => setShippingMethod("express")}
                 />
                 <span>Express Shipping ($15)</span>
               </label>
@@ -124,14 +141,24 @@ function CartPage() {
           </div>
 
           <div className="bg-indigo-100 p-4 sm:p-6 rounded-lg mb-6 sm:mb-8">
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-indigo-800">Order Summary</h2>
+            <h2 className="text-xl sm:text-2xl font-bold mb-4 text-indigo-800">
+              Order Summary
+            </h2>
             <div className="space-y-2 mb-4 text-sm sm:text-base">
-              <p className="flex justify-between"><span>Subtotal:</span> <span>${subtotal.toFixed(2)}</span></p>
-              <p className="flex justify-between"><span>Shipping:</span> <span>${shippingCost.toFixed(2)}</span></p>
+              <p className="flex justify-between">
+                <span>Subtotal:</span> <span>${subtotal.toFixed(2)}</span>
+              </p>
+              <p className="flex justify-between">
+                <span>Shipping:</span> <span>${shippingCost.toFixed(2)}</span>
+              </p>
               {discount > 0 && (
-                <p className="flex justify-between text-green-600"><span>Discount:</span> <span>-${discount.toFixed(2)}</span></p>
+                <p className="flex justify-between text-green-600">
+                  <span>Discount:</span> <span>-${discount.toFixed(2)}</span>
+                </p>
               )}
-              <p className="flex justify-between font-bold text-base sm:text-lg"><span>Total:</span> <span>${total.toFixed(2)}</span></p>
+              <p className="flex justify-between font-bold text-base sm:text-lg">
+                <span>Total:</span> <span>${total.toFixed(2)}</span>
+              </p>
             </div>
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
               <Link
@@ -150,13 +177,39 @@ function CartPage() {
           </div>
 
           <div className="bg-white shadow-md rounded-lg p-4 sm:p-6">
-            <h2 className="text-lg sm:text-xl font-semibold mb-4">Recently Viewed Items</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
-              {recentlyViewed.map(product => (
-                <div key={product.id} className="border rounded p-2 text-center">
-                  <img src={product.image} alt={product.name} className="mx-auto mb-2 w-full h-auto" />
-                  <p className="text-xs sm:text-sm">{product.name}</p>
-                  <p className="text-xs sm:text-sm font-semibold">${product.price.toFixed(2)}</p>
+            <h2 className="text-lg sm:text-xl font-semibold mb-4">
+              Recently Viewed Items
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {recentlyViewed.map((product) => (
+                <div
+                  key={product.id}
+                  className="border rounded-lg overflow-hidden shadow-md transform transition duration-300 hover:scale-105 bg-white"
+                >
+                  <div className="w-full pb-[75%] relative">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="absolute top-0 left-0 w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="p-2 sm:p-4">
+                    <h3 className="font-semibold text-xs sm:text-sm mb-1 sm:mb-2 truncate text-indigo-800">
+                      {product.name}
+                    </h3>
+                    <p className="text-indigo-600 text-xs mb-2 sm:mb-3">
+                      ${product.price.toFixed(2)}
+                    </p>
+                    <div className="flex flex-col space-y-1 sm:space-y-2">
+                      <Link
+                        to={`/product/${product.id}`}
+                        className="bg-indigo-500 text-white text-xs px-2 sm:px-3 py-1 rounded transition duration-300 hover:bg-indigo-600 text-center"
+                      >
+                        View Details
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
