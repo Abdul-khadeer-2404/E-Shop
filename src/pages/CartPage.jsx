@@ -47,13 +47,6 @@ function CartPage() {
     }
   };
 
-  const addToRecentlyViewed = (product) => {
-    setRecentlyViewed((prevItems) => {
-      const filteredItems = prevItems.filter((item) => item.id !== product.id);
-      return [product, ...filteredItems].slice(0, 4);
-    });
-  };
-
   const subtotal = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -93,6 +86,7 @@ function CartPage() {
             </div>
           </div>
 
+          {/* Rest of the component remains the same */}
           <div className="bg-white shadow-md rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
             <h2 className="text-lg sm:text-xl font-semibold mb-4">
               Promo Code
