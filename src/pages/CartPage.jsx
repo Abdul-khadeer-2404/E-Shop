@@ -14,6 +14,8 @@ function CartPage() {
     const savedRecentlyViewed = localStorage.getItem("recentlyViewed");
     return savedRecentlyViewed ? JSON.parse(savedRecentlyViewed) : [];
   });
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [itemToRemove, setItemToRemove] = useState(null);
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -30,13 +32,19 @@ function CartPage() {
   };
 
   const removeItem = (id) => {
-    if (
-      window.confirm(
-        "Are you sure you want to remove this item from your cart?"
-      )
-    ) {
-      setCart(cart.filter((item) => item.id !== id));
-    }
+    setItemToRemove(id);
+    setShowConfirmDialog(true);
+  };
+
+  const handleConfirmRemove = () => {
+    setCart(cart.filter((item) => item.id !== itemToRemove));
+    setShowConfirmDialog(false);
+    setItemToRemove(null);
+  };
+
+  const handleCancelRemove = () => {
+    setShowConfirmDialog(false);
+    setItemToRemove(null);
   };
 
   const applyPromoCode = () => {
@@ -86,7 +94,6 @@ function CartPage() {
             </div>
           </div>
 
-          {/* Rest of the component remains the same */}
           <div className="bg-white shadow-md rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
             <h2 className="text-lg sm:text-xl font-semibold mb-4">
               Promo Code
@@ -209,6 +216,35 @@ function CartPage() {
             </div>
           </div>
         </>
+      )}
+
+      {showConfirmDialog && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div className="mt-3 text-center">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">Remove Item</h3>
+              <div className="mt-2 px-7 py-3">
+                <p className="text-sm text-gray-500">
+                  Are you sure you want to remove this item from your cart?
+                </p>
+              </div>
+              <div className="items-center px-4 py-3">
+                <button
+                  onClick={handleConfirmRemove}
+                  className="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
+                >
+                  Remove
+                </button>
+                <button
+                  onClick={handleCancelRemove}
+                  className="mt-3 px-4 py-2 bg-white text-gray-800 text-base font-medium rounded-md w-full shadow-sm border border-gray-300 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
