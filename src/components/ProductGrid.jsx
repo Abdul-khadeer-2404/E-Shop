@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ProductCard from '../components/ProductCard';
+import ProductCard from './ProductCard';
 
 const sampleProducts = [
   { id: 1, name: 'Sample Product 1', price: 29.99, image: 'https://via.placeholder.com/150' },

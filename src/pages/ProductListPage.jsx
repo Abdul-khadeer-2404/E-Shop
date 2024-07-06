@@ -210,8 +210,23 @@ function ProductControls({
   viewMode,
   setViewMode,
 }) {
-  const debouncedSetSearchTerm = debounce(setSearchTerm, 300);
+  const debouncedSetSearchTerm = debounce(setSearchTerm, 50);
+  const [backspaceTimer, setBackspaceTimer] = useState(null);
+  const handleKeyDown = (e) => {
+    if (e.key === "Backspace") {
+      setBackspaceTimer(
+        setTimeout(() => {
+          setSearchTerm("");
+        }, 400) // Adjust this value to change how long the key needs to be held
+      );
+    }
+  };
 
+  const handleKeyUp = (e) => {
+    if (e.key === "Backspace") {
+      clearTimeout(backspaceTimer);
+    }
+  };
   return (
     <div className="mb-8 flex flex-col space-y-4">
       <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
@@ -231,7 +246,11 @@ function ProductControls({
           <input
             type="number"
             value={filterPrice}
-            onChange={(e) => setFilterPrice(Math.max(0, e.target.value))}
+            onChange={(e) =>
+              setFilterPrice(
+                e.target.value === "" ? "" : Math.max(0, e.target.value)
+              )
+            }
             placeholder="Max Price"
             min="0"
             className="border rounded px-2 py-1 w-full sm:w-24 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -246,6 +265,8 @@ function ProductControls({
             placeholder="Search products..."
             value={searchTerm}
             onChange={(e) => debouncedSetSearchTerm(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onKeyUp={handleKeyUp}
             className="border rounded px-10 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
@@ -463,7 +484,13 @@ function CartButton({ cart, setIsCartOpen }) {
   );
 }
 
-function CartModal({ cart, removeFromCart, setIsCartOpen, clearCart, updateQuantity }) {
+function CartModal({
+  cart,
+  removeFromCart,
+  setIsCartOpen,
+  clearCart,
+  updateQuantity,
+}) {
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
@@ -483,20 +510,34 @@ function CartModal({ cart, removeFromCart, setIsCartOpen, clearCart, updateQuant
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-2xl font-bold text-gray-900">Your Shopping Cart</h3>
+          <h3 className="text-2xl font-bold text-gray-900">
+            Your Shopping Cart
+          </h3>
           <button
             onClick={() => setIsCartOpen(false)}
             className="text-gray-400 hover:text-gray-500 transition-colors"
             aria-label="Close cart"
           >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
         <div className="mt-2">
           {cart.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">Your cart is empty.</p>
+            <p className="text-gray-500 text-center py-8">
+              Your cart is empty.
+            </p>
           ) : (
             <ul className="space-y-4 max-h-96 overflow-y-auto pr-2">
               {cart.map((item) => (
@@ -515,22 +556,51 @@ function CartModal({ cart, removeFromCart, setIsCartOpen, clearCart, updateQuant
                       <p className="text-gray-600">${item.price.toFixed(2)}</p>
                       <div className="flex items-center mt-2">
                         <button
-                          onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                          onClick={() =>
+                            updateQuantity(
+                              item.id,
+                              Math.max(1, item.quantity - 1)
+                            )
+                          }
                           className="text-gray-500 hover:text-gray-700"
                           aria-label="Decrease quantity"
                         >
-                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                          <svg
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M20 12H4"
+                            />
                           </svg>
                         </button>
-                        <span className="mx-2 font-medium">{item.quantity}</span>
+                        <span className="mx-2 font-medium">
+                          {item.quantity}
+                        </span>
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity + 1)
+                          }
                           className="text-gray-500 hover:text-gray-700"
                           aria-label="Increase quantity"
                         >
-                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                          <svg
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                            />
                           </svg>
                         </button>
                       </div>
@@ -541,8 +611,18 @@ function CartModal({ cart, removeFromCart, setIsCartOpen, clearCart, updateQuant
                     className="text-red-500 hover:text-red-700 transition-colors"
                     aria-label={`Remove ${item.title} from cart`}
                   >
-                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    <svg
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
                     </svg>
                   </button>
                 </li>

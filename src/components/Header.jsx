@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faBars, faTimes, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faBars, faTimes, faShoppingCart} from '@fortawesome/free-solid-svg-icons';
 
 function Header() {
   const location = useLocation();

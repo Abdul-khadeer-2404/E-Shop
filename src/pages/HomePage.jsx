@@ -26,7 +26,7 @@ function SkeletonLoader() {
           key={index}
           className="border rounded-lg overflow-hidden shadow-md bg-white p-4"
         >
-          <div className="w-full h-48 bg-gray-300 animate-pulse mb-4"></div>
+          <div className="w-full h-24 lg:h-48 bg-gray-300 animate-pulse mb-4"></div>
           <div className="h-4 bg-gray-300 rounded animate-pulse mb-2"></div>
           <div className="h-4 bg-gray-300 rounded animate-pulse w-2/3"></div>
         </div>
@@ -34,6 +34,7 @@ function SkeletonLoader() {
     </div>
   );
 }
+
 
 function FeaturedProducts({ products, isLoading }) {
   if (isLoading) {
